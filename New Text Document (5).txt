@@ -1,0 +1,19 @@
+
+
+class Student{
+	int rollno;
+	String name;
+	Student(String S,int r)
+	{
+		System.out.println("hello");
+	}
+	}
+class l6code2
+{
+	public static void main(String[] args)
+	{
+		Student S=new Student("abc",0);
+                System.out.println(a.name);
+                System.out.println(a.rollno);
+	}
+}
