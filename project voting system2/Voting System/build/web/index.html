@@ -1,0 +1,286 @@
+
+<html>
+	<head>
+            <title>Login Form</title>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+            <style type="text/css">
+                *{
+                    font-family: monospace,sans-serif;
+                    box-sizing: border-box;
+                }
+                body{
+                    background: #311414;
+                }
+                nav{
+                    background: white;
+                    padding: 10px 20px;
+                    float: left;
+                    width: 100%;
+                    box-shadow: 0px 0px 10px black;
+                }
+                nav h1{
+                    margin: 0px;
+                    width: 100%;
+                }
+                nav div{
+                    width: 50%;
+                    float: right;
+                }
+                nav div:first-child{
+                    float: left;
+                }
+                nav div a{
+                    padding: 5px 10px;
+                    float: right;
+                    font-family: fantasy;
+                    text-transform: uppercase;
+                }
+                .form{
+                    position: relative;
+                    top: -1000px;
+                    clear: both;
+                    margin: auto;
+                    text-align: center;
+                    width: 100px;
+                    padding: 10px;
+                    box-shadow: 0px 10px 10px #1c0d0d;
+                    background: #971e1e;
+                    opacity: 0.4;
+                }
+                fieldset{
+                    border: none;
+                    padding: 0px 20px 40px 20px;
+                    background: #ae2e2e;
+                    box-shadow: inset 0px 0px 150px #8b1b1b;
+                }
+                label{
+                    float: left;
+                    background: #322c2c;
+                    padding: 10px;
+                    width: 20%;
+                    color: white;
+                }
+                legend{
+                    color: white;
+                    text-align: left;
+                }
+                input{
+                    outline: none!important;
+                    border: 0px;
+                    float: left;
+                    padding: 10.5px;
+                    color: white;
+                    font-family: monospace;
+                    background: #4b3939!important;
+                    width: 80%;                   
+                }
+                .form div{
+                    width: 90%;
+                    float: left;
+                    margin-top: 20px;
+                    margin-left: 5%;
+                    margin-right: 5%;
+                }
+                #but input{
+                    width: 30%;
+                    text-transform: uppercase;
+                    background: #322c2c!important;
+                    color: white;
+                    float: none;
+                    font-family: monospace,sans-serif;
+                }
+                input:focus{
+                    box-shadow: inset 0px 0px 5px #151212;
+                }
+                .active{
+                    background: #bc3939;
+                    color: white;
+                }
+                .head{
+                    position: relative;
+                    text-transform: uppercase;
+                }
+                .head span{
+                    left: -100px;
+                    position: absolute;
+                }
+            </style>
+            <script>
+                $(document).ready(function(){
+                    $(".form").animate({top: 50});
+                    $(".form").animate({width: 400});
+                    $(".form").animate({opacity: 1});
+                });
+                $(document).ready(function(){
+                    $("nav a").click(function(){
+                        $("nav a").removeClass("active");                     
+                        $(this).addClass("active");
+                    });
+                    $("nav a:eq(1)").click(function(){                        
+                        $("#signup").hide();
+                        $("#login").show();
+                    });
+                    $("nav a:eq(0)").click(function(){                        
+                        $("#login").hide();
+                        $("#signup").show();
+                    });
+                });
+                i=0; 
+                $(document).ready(function(){
+                    var len = $(".head span").length;
+                    i = len;
+                    var interval = setInterval(function(){
+                      $(".head span:eq("+i+")").animate({left: 10+20*i});  
+                      i--;
+                      if(i<0){
+                          clearInterval(interval);
+                      }
+                      console.log(i);
+                    },150);                        
+                });
+                $(document).ready(function(){
+                    $("#submit2").click(function(e){
+                        var pattern = new RegExp(/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/);
+                        e.preventDefault();
+                        if($("#user2").val() != "" && $("#pwd2").val() != ""){
+                            if($("#pwd2").val() != $("#pwd3").val()){
+                                alert("password does not match");
+                            }
+                            else{
+                                var name =$("#user2").val();
+                                var pwd =$("#pwd2").val();
+                                console.log(name);
+                                $.ajax({
+                                    type: "POST",
+                                    url: "Servlet2",
+                                    data: "name="+name+"&pwd="+pwd,
+                                    success: function (msg) {
+                                        var obj = JSON.parse(msg);
+                                        if(obj.success == 10){
+                                            alert(obj.msg);   
+                                        }
+                                        else{
+                                            window.location = "vote.jsp";
+                                        }
+                                    },
+                                    error: function () {                                    
+                                        alert("Error!!");                            
+                                    }
+                                });
+                            }
+                        }
+                        else if($("#user2").val().length > 10 || $("#user2").val().length < 7 ||  $("#pwd2").val().length > 10 || $("#pwd2").val().length < 7){
+                            alert("No of characters allowed 7-10");
+                        }
+                        else{
+                            alert("Please fill the required info!!");
+                        }
+                    });
+                });
+                $(document).ready(function(){
+                    $("#submit").click(function (e) {
+                        var pattern = new RegExp(/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/);
+                        e.preventDefault();
+                        if($("#user").val() != "" && $("#pwd").val() != ""){
+                            if($("#name").val()!=""){
+                                var name =$("#user").val();
+                                var pwd =$("#pwd").val();
+                                console.log(name);
+                                $.ajax({
+                                    type: "POST",
+                                    url: "Servlet",
+                                    data: "name="+name+"&pwd="+pwd,
+                                    success: function (msg) {
+                                        var obj = JSON.parse(msg);
+                                        if(obj.success == 10){
+                                            alert(obj.msg);   
+                                        }
+                                        else{
+                                            window.location = "vote.jsp";
+                                        }
+                                    },
+                                    error: function () {
+                                        alert("Error!!");
+                                    }
+                                });
+                            }
+                        }
+                        else if($("#user").val().length > 10 || $("#user").val().length < 7 || $("#pwd").val().length > 10 && $("#pwd").val().length < 7){
+                            alert("No of characters allowed 7-10");
+                        }
+                        else{
+                            alert("Please fill the required info!!");
+                        }
+                    }); 
+                });
+            </script>
+	</head>
+	<body style="margin:0px;">
+            <nav>
+                <div>
+                    <h1 class= "head">
+                        <span>v</span>
+                        <span>o</span>
+                        <span>t</span>
+                        <span>i</span>
+                        <span>n</span>
+                        <span>g</span>
+                        <span> </span>
+                        <span>s</span>
+                        <span>y</span>
+                        <span>s</span>
+                        <span>t</span>
+                        <span>e</span>
+                        <span>m</span>
+                    </h1>
+                </div>
+                <div>
+                    <a>SignUp</a>   
+                    <a class="active">Login</a>                 
+                </div>
+            </nav>
+            <div id="login" class ="form">
+                <fieldset><legend style="font-size: 25px;text-transform: uppercase;">Login</legend>
+                    <div>
+                        <label for="user"><i class="fa fa-user"></i></label>
+                        <input id = "user" type="text" placeholder="username" required>
+                    </div>                    			
+                    <br>
+                    <div>
+                        <label for="pwd"><i class="fa fa-lock"></i></label>
+                        <input id="pwd" type="password" placeholder="password" required>
+                    </div>
+                    
+                    <br>
+                    <div id="but">
+                        <input type="submit" id ="submit">
+                        <input type="reset">
+                    </div>                    
+                </fieldset>
+            </div>
+            <div id="signup" class ="form" style="display: none;">
+                <fieldset><legend style="font-size: 25px;text-transform: uppercase;">signup</legend>
+                    <div>
+                        <label for="user2"><i class="fa fa-user"></i></label>
+                        <input id = "user2" type="text" placeholder="username" required>
+                    </div>                    			
+                    <br>
+                    <div>
+                        <label for="pwd2"><i class="fa fa-lock"></i></label>
+                        <input id="pwd2" type="password" placeholder="password" required>
+                    </div>
+                    
+                    <br>
+                    <div>
+                        <label for="pwd3"><i class="fa fa-lock"></i></label>
+                        <input id="pwd3" type="password" placeholder="confirm password" required>
+                    </div>
+                    <div id="but">
+                        <input type="submit" value="submit" id="submit2">
+                        <input type="reset">
+                    </div>                    
+                </fieldset>
+            </div>
+	</body>          
+</html>
